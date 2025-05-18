@@ -21,4 +21,5 @@ public class Main {
         game.run();
         System.out.println(StringStyling.StyleString("Terminating...", Style.ITALIC, Color.BLACK));
     }
+    
 }
