@@ -1,28 +1,24 @@
-package main;
-
-
-import examples.ConsoleStylingExample;
-import examples.StringManipulation;
-import examples.UserInputExample;
-import utils.Color;
-import utils.StringStyling;
-import utils.Style;
-
+import java.util.Scanner;
+ 
 public class Main {
-
     public static void main(String[] args) {
-        // you can safely remove those examples lines
-        StringManipulation.Example();
-        ConsoleStylingExample.Example();
-        UserInputExample.Example();
-
-        System.out.println(StringStyling.StyleString("Starting...", Style.ITALIC, Color.BLACK));
         Game game = new Game();
-        game.run();
-        System.out.println(StringStyling.StyleString("Terminating...", Style.ITALIC, Color.BLACK));
+        game.init();
+        Scanner sc = new Scanner(System.in);
+ 
+        while (true) {
+            System.out.print("> ");
+            String input = sc.nextLine();
+            String[] parts = input.split(" ", 2);
+            String cmd = parts[0];
+            String argsStr = parts.length > 1 ? parts[1] : "";
+ 
+            ICommand command = game.getRegistry().getCommand(cmd);
+            if (command != null) {
+                command.execute(argsStr, game);
+            } else {
+                System.out.println("Commande inconnue. Tapez 'help'.");
+            }
+        }
     }
-
-  
-  
-  
 }
