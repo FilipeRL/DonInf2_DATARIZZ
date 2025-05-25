@@ -1,28 +1,17 @@
-import java.util.HashMap;
-
-import java.util.Map;
+import java.util.*;
  
 public class CommandRegistry {
-
     private Map<String, ICommand> commands = new HashMap<>();
  
-    public void registerCommand(String keyword, ICommand command) {
-
-        commands.put(keyword.toLowerCase(), command);
-
+    public void registerCommand(ICommand cmd) {
+        commands.put(cmd.getKeyword(), cmd);
     }
  
     public ICommand getCommand(String keyword) {
-
-        return commands.get(keyword.toLowerCase());
-
+        return commands.get(keyword);
     }
  
-    public Map<String, ICommand> getAllCommands() {
-
+    public Collection<ICommand> getAllCommands() {
         return commands.values();
-
     }
-
 }
- 

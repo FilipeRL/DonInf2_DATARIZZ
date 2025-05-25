@@ -5,7 +5,7 @@ public class MoveCommand implements ICommand {
     public void execute(String args, Game game) {
         int r = game.getPlayer().getRow();
         int c = game.getPlayer().getCol();
-        switch (args) {
+        switch (args.toLowerCase()) {
             case "north": r--; break;
             case "south": r++; break;
             case "east":  c++; break;

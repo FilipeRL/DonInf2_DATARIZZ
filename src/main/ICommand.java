@@ -1,7 +1,5 @@
 public interface ICommand {
-    
-    String getKeyWord ();
-    String getHelpText ();
-    void execute (String arg Game game);
-
+    String getKeyword();
+    String getHelpText();
+    void execute(String args, Game game);
 }

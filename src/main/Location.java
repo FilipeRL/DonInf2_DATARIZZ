@@ -1,29 +1,52 @@
+import utils.IPrintable;
+ 
 public class Location implements IPrintable {
 
     private String name;
+
     private String description;
-    private boolean locked;
 
-    public Location (String name, String description, boolean locked){
+    private boolean open;
+ 
+    public Location(String name, String description, boolean open) {
+
         this.name = name;
+
         this.description = description;
-        this.locked = locked;
-    } 
 
-    public void unlock (){
-        this.locked = true;
+        this.open = open;
+
     }
+ 
+    public boolean isOpen() {
 
-    public boolean isOpen (){
-        return locked;
+        return open;
+
     }
+ 
+    public String getDescription() {
 
-    public String getDescription (){
         return description;
+
     }
+ 
+    // Implémentation de IPrintable :
 
     @Override
-    public String getPrintableText(){
-        return locked ? "O" : "X";
+
+    public String getPrintableString() {
+
+        return open ? "O" : "X";
+
     }
+ 
+    @Override
+
+    public boolean isGrayedOut() {
+
+        return !open; // grisé si la zone est verrouillée
+
+    }
+
 }
+ 
