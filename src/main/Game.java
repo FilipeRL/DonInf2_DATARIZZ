@@ -18,11 +18,22 @@ public class Game {
         map.addLocation(new Location("Bureau", "Un bureau silencieux.", true), 1, 2);
  
         player.setPosition(0, 0);
- 
-        registry.registerCommand(new MoveCommand());
-        registry.registerCommand(new MapCommand());
-        registry.registerCommand(new LookCommand());
-        registry.registerCommand(new HelpCommand(registry));
+
+        // Game.java (inside init() method)
+// ... existing location definitions and player.setPosition ...
+
+// Add items to locations
+map.getLocation(0, 0).addItem(new Item("Tapis", "Un vieux tapis poussiéreux."));
+map.getLocation(1, 0).addItem(new Key("CléRouillée", "Une clé rouillée. Elle pourrait ouvrir la cave.", "cave")); // Assuming "Cave" is at 0,2
+map.getLocation(1, 0).addItem(new Item("Lampe", "Une lampe à huile éteinte."));
+// Add more items to other locations as desired
+
+// Register new commands
+registry.registerCommand(new TakeCommand());
+registry.registerCommand(new InspectCommand());
+registry.registerCommand(new UseCommand());
+
+// ... existing System.out.println ...
  
         System.out.println("Bienvenue ! Tapez 'help' pour la liste des commandes.");
     }
