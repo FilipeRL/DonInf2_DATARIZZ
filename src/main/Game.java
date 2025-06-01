@@ -32,6 +32,9 @@ map.getLocation(1, 0).addItem(new Item("Lampe", "Une lampe à huile éteinte."))
 registry.registerCommand(new TakeCommand());
 registry.registerCommand(new InspectCommand());
 registry.registerCommand(new UseCommand());
+registry.registerCommand(new HelpCommand(registry));
+registry.registerCommand(new MapCommand());
+registry.registerCommand(new MoveCommand());
 
 // ... existing System.out.println ...
  
