@@ -1,6 +1,11 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class Player {
     private int row;
     private int col;
+    private List<Item> inventory = new ArrayList<>();
+
  
     public int getRow() { return row; }
     public int getCol() { return col; }
@@ -9,6 +14,11 @@ public class Player {
         this.row = row;
         this.col = col;
     }
+
+    public List<Item> getInventory() {
+    return inventory;
+    }
+
     public Item getItemInInventory(String itemName) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getItemInInventory'");

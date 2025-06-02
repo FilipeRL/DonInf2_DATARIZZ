@@ -1,11 +1,9 @@
-// Key.java
-// Make sure this is in the same package as Item, or import Item appropriately
 public class Key extends Item {
-    private String unlocksLocationName; // The name of the location this key unlocks
+    private String unlocksLocationName; // Le nom de la salle que la clé déverrouille
 
     public Key(String name, String description, String unlocksLocationName) {
         super(name, description);
-        this.unlocksLocationName = unlocksLocationName.toLowerCase(); // Store lowercase for easy comparison
+        this.unlocksLocationName = unlocksLocationName.toLowerCase(); // Pour comparaison insensible à la casse
     }
 
     public String getUnlocksLocationName() {
@@ -14,12 +12,13 @@ public class Key extends Item {
 
     @Override
     public void use(Game game) {
-        // Find the location by name in the WorldMap
-        Location locationToUnlock = null;
         WorldMap map = game.getWorldMap();
+        Location locationToUnlock = null;
+
+        // Recherche de la salle à déverrouiller
         for (int r = 0; r < map.getGrid().length; r++) {
             for (int c = 0; c < map.getGrid()[r].length; c++) {
-                Location loc = (Location) map.getLocation(r, c); // Cast needed as getGrid() returns IPrintable
+                Location loc = (Location) map.getLocation(r, c); // Cast si nécessaire
                 if (loc != null && loc.getName().toLowerCase().equals(unlocksLocationName)) {
                     locationToUnlock = loc;
                     break;
@@ -28,15 +27,17 @@ public class Key extends Item {
             if (locationToUnlock != null) break;
         }
 
+        if (locationToUnlock == null) {
+            System.out.println("Cette clé ne correspond à aucune salle connue.");
+            return;
+        }
 
-        if (locationToUnlock != null && !locationToUnlock.isOpen()) {
-            locationToUnlock.setOpen(true); // Unlock the zone
+        if (!locationToUnlock.isOpen()) {
+            locationToUnlock.setOpen(true); // Ouvre la salle
             System.out.println("Vous avez utilisé la " + getName() + " et déverrouillé " + locationToUnlock.getName() + " !");
-            game.getPlayer().removeItem(this); // Key is consumed after use
-        } else if (locationToUnlock != null && locationToUnlock.isOpen()) {
-            System.out.println(locationToUnlock.getName() + " est déjà déverrouillée.");
+            game.getPlayer().removeItem(this); // Clé consommée
         } else {
-            System.out.println("La " + getName() + " ne semble rien déverrouiller ici.");
+            System.out.println(locationToUnlock.getName() + " est déjà déverrouillée.");
         }
     }
 }
