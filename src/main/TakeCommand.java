@@ -1,4 +1,3 @@
-// TakeCommand.java
 import java.util.List;
 
 public class TakeCommand implements ICommand {
@@ -9,18 +8,11 @@ public class TakeCommand implements ICommand {
 
     @Override
     public String getHelpText() {
-        return "Prend un objet de la zone actuelle.";
+        return "Prend un objet dans la zone actuelle. Si aucun nom n'est donné, prend le premier objet trouvé.";
     }
 
     @Override
     public void execute(String args, Game game) {
-        if (args.isEmpty()) {
-            System.out.println("Usage: take <nom_objet>");
-            return;
-        }
-        String itemName = args.toLowerCase();
-        
-        // Get current player location
         int r = game.getPlayer().getRow();
         int c = game.getPlayer().getCol();
         Location currentLocation = game.getWorldMap().getLocation(r, c);
@@ -31,19 +23,35 @@ public class TakeCommand implements ICommand {
         }
 
         Item itemToTake = null;
-        for (Item item : currentLocation.getItems()) {
-            if (item.getName().toLowerCase().equals(itemName)) {
-                itemToTake = item;
-                break;
+
+        if (args == null || args.trim().isEmpty()) {
+            // Aucun nom spécifié : prendre le premier item
+            List<Item> items = currentLocation.getItems();
+            if (!items.isEmpty()) {
+                itemToTake = items.get(0);
+            } else {
+                System.out.println("Il n'y a rien à prendre ici.");
+                return;
+            }
+        } else {
+            // Nom spécifié : chercher l’item correspondant
+            String itemName = args.toLowerCase();
+            for (Item item : currentLocation.getItems()) {
+                if (item.getName().toLowerCase().equals(itemName)) {
+                    itemToTake = item;
+                    break;
+                }
+            }
+
+            if (itemToTake == null) {
+                System.out.println("Il n'y a pas de " + itemName + " ici.");
+                return;
             }
         }
 
-        if (itemToTake != null) {
-            currentLocation.removeItem(itemToTake);
-            game.getPlayer().addItem(itemToTake);
-            System.out.println("Vous avez pris le " + itemToTake.getName() + ".");
-        } else {
-            System.out.println("Il n'y a pas de " + itemName + " ici.");
-        }
+        // Prise de l’item
+        currentLocation.removeItem(itemToTake);
+        game.getPlayer().addItem(itemToTake);
+        System.out.println("Vous avez pris le " + itemToTake.getName() + ".");
     }
 }

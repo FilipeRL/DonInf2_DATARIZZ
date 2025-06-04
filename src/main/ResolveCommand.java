@@ -18,7 +18,7 @@ public class ResolveCommand implements ICommand {
 
         String tentative = args.trim().toLowerCase();
 
-        for (Item item : game.getPlayer().getInventory()) {
+        for (Item item : game.getPlayer().getItemInInventory()) {
             if (item instanceof Letter) {
                 Enigme enigme = ((Letter) item).getEnigma();
 

@@ -15,20 +15,24 @@ public class Player {
         this.col = col;
     }
 
-    public List<Item> getInventory() {
+    public List<Item> getItemInInventory() {
     return inventory;
     }
 
-    public Item getItemInInventory(String itemName) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getItemInInventory'");
+    public void addItem(Item item) {
+    inventory.add(item);
     }
-    public void removeItem(Key key) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'removeItem'");
+
+    public void removeItem(Item item) {
+    inventory.remove(item);
     }
-    public void addItem(Item itemToTake) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addItem'");
+    
+    public Item getItemInInventory(String name) {
+    for (Item item : inventory) {
+        if (item.getName().toLowerCase().equals(name.toLowerCase())) {
+            return item;
+        }
     }
+    return null;
+}
 }
