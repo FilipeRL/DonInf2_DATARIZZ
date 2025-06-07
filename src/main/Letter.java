@@ -12,12 +12,10 @@ public class Letter extends Item {
 
     @Override
     public void use(Game game) {
-        System.out.println("Lettre : " + getName());
-        System.out.println(getDescription());
 
         if (!enigme.isResolue()) {
             System.out.println("Énigme : " + enigme.getQuestion());
-            System.out.println("Tapez 'resolve <réponse>' pour tenter de la résoudre.");
+            System.out.println("Tapez 'say <réponse>' pour tenter de la résoudre.");
         } else {
             System.out.println("Cette énigme est déjà résolue.");
         }

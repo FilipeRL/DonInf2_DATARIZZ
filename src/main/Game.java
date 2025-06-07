@@ -5,7 +5,7 @@ public class Game {
  
     public Game() {
         player = new Player();
-        map = new WorldMap(3, 3);
+        map = new WorldMap(4, 3);
         registry = new CommandRegistry();
     }
  
@@ -16,26 +16,64 @@ public class Game {
         map.addLocation(new Location("Salon", "Un salon confortable.", true), 1, 0);
         map.addLocation(new Location("Cuisine", "Une cuisine abandonnée.", false), 1, 1);
         map.addLocation(new Location("Bureau", "Un bureau silencieux.", true), 1, 2);
+        map.addLocation(new Location("Bibliothèque", "Une vieille bibliothèque pleine de livres poussiéreux.", true), 2, 0);
+        map.addLocation(new Location("Laboratoire", "Un ancien laboratoire, des fioles traînent encore.", false), 2, 1);
+        map.addLocation(new Location("Jardin", "Un petit jardin intérieur, calme et verdoyant.", true), 2, 2);
+        map.addLocation(new Location("Grenier", "Un grenier sombre, plein de toiles d’araignée.", false),3, 0);
+        map.addLocation(new Location("Chambre", "Une chambre abandonnée, le lit est encore fait.",  true), 3,  1);
+        map.addLocation(new Location("Observatoire", "Une grande pièce avec un télescope pointé vers le ciel.", true),  3,  2);
+
  
         player.setPosition(0, 0);
 
 
 // Création de la récompense
-Key cleEnigme = new Key("CléEnigme", "Une clé mystérieuse obtenue après avoir résolu une énigme.", "cuisine");
+Key cleEnigme = new Key("CleEnigme", "Une clé mystérieuse obtenue après avoir résolu une énigme.", "cuisine");
+Key cleFeu = new Key("CleFlamme", "Une clé brûlante, chaude au toucher.", "grenier");
+Key cleTemps = new Key("CleDuTemps", "Une clé ancienne marquée d'une horloge.", "Laboratoire");
+Key cleOmbre = new Key("CleOmbre", "Une clé noire, presque invisible dans la lumière.", "cave");
 
 // Création de l'énigme
-Enigme enigme = new Enigme(
+Enigme enigmelettre = new Enigme(
     "Je suis toujours là, parfois brillante, parfois pâle, je veille sur la nuit. Qui suis-je ?",
     "la lune",
     cleEnigme
 );
 
+Enigme enigmeFeu = new Enigme(
+    "Je danse sans pieds, je m’élève sans ailes, je peux tout détruire ou réchauffer. Qui suis-je ?",
+    "le feu",
+    cleFeu
+);
+
+Enigme enigmeTemps = new Enigme(
+    "Je ne peux être vu, mais je fais vieillir tout ce que je touche. Je cours sans jambes. Qui suis-je ?",
+    "le temps",
+    cleTemps
+);
+
+Enigme enigmeOmbre = new Enigme(
+    "Je te suis partout, mais je disparais dans l'obscurité totale. Qui suis-je ?",
+    "l'ombre",
+    cleOmbre
+);
+
+
+
+
 // Création de la lettre contenant l'énigme
-Letter lettre = new Letter("Lettre Lunaire", "Une lettre contenant une énigme étrange.", enigme);
+Letter lettre = new Letter("Lettre Lunaire", "Une lettre contenant une énigme étrange.", enigmelettre);
+Letter lettreFeu = new Letter("LettreFlamme", "Une lettre brûlée sur les bords.", enigmeFeu);
+Letter lettreTemps = new Letter("LettreDuTemps", "Une lettre ancienne avec une horloge dessinée.", enigmeTemps);
+Letter lettreOmbre = new Letter("LettreOmbre", "Une lettre noire à peine lisible.", enigmeOmbre);
+
 
 
 // Add items to locations
     map.getLocation(0, 0).addItem(lettre); 
+    map.getLocation(1, 0).addItem(lettreFeu); 
+    map.getLocation(0, 2).addItem(lettreTemps); 
+    map.getLocation(3, 2).addItem(lettreOmbre); 
 // Bureau par exemple// Add more items to other locations as desired
 
 // Register new commands
@@ -47,6 +85,8 @@ registry.registerCommand(new HelpCommand(registry));
 registry.registerCommand(new MapCommand());
 registry.registerCommand(new MoveCommand());
 registry.registerCommand(new LookCommand());
+registry.registerCommand(new InventoryCommand());
+
 
 // ... existing System.out.println ...
  

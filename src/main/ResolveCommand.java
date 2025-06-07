@@ -1,7 +1,7 @@
 public class ResolveCommand implements ICommand {
     @Override
     public String getKeyword() {
-        return "resolve";
+        return "say";
     }
 
     @Override
@@ -12,7 +12,7 @@ public class ResolveCommand implements ICommand {
     @Override
     public void execute(String args, Game game) {
         if (args == null || args.trim().isEmpty()) {
-            System.out.println("Usage: resolve <réponse>");
+            System.out.println("Usage: say <réponse>");
             return;
         }
 
