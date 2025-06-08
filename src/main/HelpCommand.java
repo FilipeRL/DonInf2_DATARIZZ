@@ -7,8 +7,11 @@ public class HelpCommand implements ICommand {
     public String getHelpText() { return "Liste les commandes disponibles."; }
  
     public void execute(String args, Game game) {
-        for (ICommand cmd : registry.getAllCommands()) {
-            System.out.println(cmd.getKeyword() + " - " + cmd.getHelpText());
+    for (ICommand cmd : registry.getAllCommands()) {
+        if (cmd.getKeyword().equals("teleport") && !game.getPlayer().hasItem("Cristal")) {
+            continue; // cacher teleport si pas de cristal
+        }
+        System.out.println(cmd.getKeyword() + " - " + cmd.getHelpText());
         }
     }
 }

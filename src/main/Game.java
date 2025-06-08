@@ -2,21 +2,23 @@ public class Game {
     private Player player;
     private WorldMap map;
     private CommandRegistry registry;
+    private SaveSystem saveSystem;
  
-    public Game() {
-        player = new Player();
-        map = new WorldMap(4, 3);
-        registry = new CommandRegistry();
+    public Game(SaveSystem saveSystem) {
+        this.saveSystem = saveSystem;
+        this.player = new Player();
+        this.map = new WorldMap(4, 3);
+        this.registry = new CommandRegistry();
     }
  
     public void init() {
-        map.addLocation(new Location("Entrée", "Vous êtes à l’entrée.", true), 0, 0);
+        map.addLocation(new Location("Entree", "Vous êtes à l’entrée.", true), 0, 0);
         map.addLocation(new Location("Hall", "Un grand hall poussiéreux.", true), 0, 1);
         map.addLocation(new Location("Cave", "Une cave sombre et verrouillée.", false), 0, 2);
         map.addLocation(new Location("Salon", "Un salon confortable.", true), 1, 0);
         map.addLocation(new Location("Cuisine", "Une cuisine abandonnée.", false), 1, 1);
         map.addLocation(new Location("Bureau", "Un bureau silencieux.", true), 1, 2);
-        map.addLocation(new Location("Bibliothèque", "Une vieille bibliothèque pleine de livres poussiéreux.", true), 2, 0);
+        map.addLocation(new Location("Bibliotheque", "Une vieille bibliothèque pleine de livres poussiéreux.", true), 2, 0);
         map.addLocation(new Location("Laboratoire", "Un ancien laboratoire, des fioles traînent encore.", false), 2, 1);
         map.addLocation(new Location("Jardin", "Un petit jardin intérieur, calme et verdoyant.", true), 2, 2);
         map.addLocation(new Location("Grenier", "Un grenier sombre, plein de toiles d’araignée.", false),3, 0);
@@ -24,7 +26,7 @@ public class Game {
         map.addLocation(new Location("Observatoire", "Une grande pièce avec un télescope pointé vers le ciel.", true),  3,  2);
 
  
-        player.setPosition(0, 0);
+        player.setPosition(0, 0, this);
 
 
 // Création de la récompense
@@ -68,12 +70,14 @@ Letter lettreTemps = new Letter("LettreDuTemps", "Une lettre ancienne avec une h
 Letter lettreOmbre = new Letter("LettreOmbre", "Une lettre noire à peine lisible.", enigmeOmbre);
 
 
-
 // Add items to locations
     map.getLocation(0, 0).addItem(lettre); 
     map.getLocation(1, 0).addItem(lettreFeu); 
     map.getLocation(0, 2).addItem(lettreTemps); 
-    map.getLocation(3, 2).addItem(lettreOmbre); 
+    map.getLocation(3, 2).addItem(lettreOmbre);
+    map.getLocation(0, 0).addItem(new TeleportCrystal()); // Jardin ou autre zone
+
+
 // Bureau par exemple// Add more items to other locations as desired
 
 // Register new commands
@@ -86,13 +90,33 @@ registry.registerCommand(new MapCommand());
 registry.registerCommand(new MoveCommand());
 registry.registerCommand(new LookCommand());
 registry.registerCommand(new InventoryCommand());
+registry.registerCommand(new SaveCommand());
+registry.registerCommand(new TeleportCommand());
+
 
 
 // ... existing System.out.println ...
  
         System.out.println("Bienvenue ! Tapez 'help' pour la liste des commandes.");
     }
- 
+
+    public void runCommand(String line, boolean record) {
+    String[] parts = line.split(" ", 2);
+    String keyword = parts[0];
+    String args = parts.length > 1 ? parts[1] : "";
+
+    ICommand command = registry.getCommand(keyword);
+    if (command != null) {
+        command.execute(args, this);
+        if (record && !keyword.equals("save")) {
+            saveSystem.record(line);
+            }
+        } else {
+        System.out.println("Commande inconnue.");
+        }
+    }
+
+    public SaveSystem getSaveSystem() { return saveSystem; }
     public Player getPlayer() { return player; }
     public WorldMap getWorldMap() { return map; }
     public CommandRegistry getRegistry() { return registry; }

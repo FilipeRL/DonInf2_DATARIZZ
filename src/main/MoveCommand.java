@@ -20,7 +20,7 @@ public class MoveCommand implements ICommand {
         } else if (!next.isOpen()) {
             System.out.println("zone locked");
         } else {
-            game.getPlayer().setPosition(r, c);
+            game.getPlayer().setPosition(r, c, game);
             System.out.println(next.getDescription());
         }
     }

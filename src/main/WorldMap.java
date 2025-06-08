@@ -19,4 +19,12 @@ public class WorldMap {
     public IPrintable[][] getGrid() {
         return grid;
     }
+    
+    public int getRows() {
+        return grid.length;
+    }
+
+    public int getCols() {
+        return grid[0].length;
+    }
 }

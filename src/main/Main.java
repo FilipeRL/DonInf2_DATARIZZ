@@ -2,23 +2,28 @@ import java.util.Scanner;
  
 public class Main {
     public static void main(String[] args) {
-        Game game = new Game();
+        Scanner scanner = new Scanner(System.in);
+        SaveSystem saveSystem = new SaveSystem();
+        Game game = new Game(saveSystem);
+
+        System.out.println("Charger la dernière sauvegarde ? (oui/non)");
+        String input = scanner.nextLine().trim().toLowerCase();
+
         game.init();
-        Scanner sc = new Scanner(System.in);
- 
+
+        if (input.equals("oui") && saveSystem.hasSave()) {
+            saveSystem.loadAndTrack(); // charge les anciennes commandes
+            for (String cmd : saveSystem.load()) {
+                game.runCommand(cmd, false); // les rejoue sans les enregistrer à nouveau
+            }
+            System.out.println("Sauvegarde chargée !");
+        }
+
         while (true) {
             System.out.print("> ");
-            String input = sc.nextLine();
-            String[] parts = input.split(" ", 2);
-            String cmd = parts[0];
-            String argsStr = parts.length > 1 ? parts[1] : "";
- 
-            ICommand command = game.getRegistry().getCommand(cmd);
-            if (command != null) {
-                command.execute(argsStr, game);
-            } else {
-                System.out.println("Commande inconnue. Tapez 'help'.");
-            }
+            String cmd = scanner.nextLine();
+            game.runCommand(cmd, true);
         }
     }
 }
+
